@@ -110,7 +110,7 @@
 
 let selectedSymptoms = [];
 
-// ✅ LOAD SYMPTOMS FROM DEPLOYED API
+// 🔹 Load symptoms
 async function loadSymptoms() {
     let res = await fetch("https://disease-prediction-system-api-v582.onrender.com/symptoms");
     let data = await res.json();
@@ -125,7 +125,7 @@ async function loadSymptoms() {
     });
 }
 
-// ✅ ADD SYMPTOM
+// 🔹 Add symptom
 function addSymptom() {
     let dropdown = document.getElementById("symptomDropdown");
     let value = dropdown.value;
@@ -138,7 +138,7 @@ function addSymptom() {
     dropdown.value = "";
 }
 
-// ✅ SHOW SELECTED
+// 🔹 Show selected
 function renderSelected() {
     let box = document.getElementById("selectedBox");
     box.innerHTML = "";
@@ -153,13 +153,13 @@ function renderSelected() {
     });
 }
 
-// ✅ REMOVE
+// 🔹 Remove symptom
 function removeSymptom(symptom) {
     selectedSymptoms = selectedSymptoms.filter(s => s !== symptom);
     renderSelected();
 }
 
-// ✅ PREDICT (FIXED)
+// 🔹 Predict
 async function predict() {
 
     let errorDiv = document.getElementById("errorMsg");
@@ -177,23 +177,36 @@ async function predict() {
             body: JSON.stringify({ selected_symptoms: selectedSymptoms })
         });
 
-        if (!response.ok) {
-            throw new Error("API Error");
-        }
+        if (!response.ok) throw new Error("API error");
 
         let data = await response.json();
         console.log("API Response:", data);
 
         let resultDiv = document.getElementById("result");
+        resultDiv.innerHTML = "<h2>Prediction Results:</h2>";
 
-        // ✅ SIMPLE RESULT DISPLAY (MATCHES BACKEND)
-        resultDiv.innerHTML = `
-            <h2>Prediction Result:</h2>
-            <div class="card top">
-                <h3>${data.prediction}</h3>
-                <p><b>Status:</b> ${data.status}</p>
-            </div>
-        `;
+        // 🔥 Low confidence warning
+        if (data.results[0].probability < 30) {
+            resultDiv.innerHTML += "<p style='color:red;'>⚠️ Low confidence prediction. Try adding more symptoms.</p>";
+        }
+
+        // 🔥 Uncertainty warning
+        if (data.results.length > 1 &&
+            (data.results[0].probability - data.results[1].probability < 10)) {
+            resultDiv.innerHTML += "<p style='color:orange;'>⚠️ Model is uncertain. Multiple diseases have similar probability.</p>";
+        }
+
+        // 🔥 Show results
+        data.results.forEach((item, index) => {
+            resultDiv.innerHTML += `
+                <div class="card ${index === 0 ? 'top' : ''}">
+                    <h3>${item.disease}</h3>
+                    <p><b>Confidence:</b> ${item.probability}%</p>
+                    <p>${item.description}</p>
+                    <p><b>Precautions:</b> ${item.precautions.join(", ")}</p>
+                </div>
+            `;
+        });
 
     } catch (error) {
         console.error(error);
@@ -201,7 +214,7 @@ async function predict() {
     }
 }
 
-// INIT
+// 🔹 Init
 loadSymptoms();
 
 </script>
