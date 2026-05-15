@@ -114,7 +114,7 @@ let selectedSymptoms = [];
 
 // Load symptoms
 async function loadSymptoms() {
-    let res = await fetch("http://127.0.0.1:8000/symptoms");
+    let res = await fetch("https://disease-prediction-system-api-v582.onrender.com/symptoms");
     let data = await res.json();
 
     let dropdown = document.getElementById("symptomDropdown");
