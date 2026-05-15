@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Disease Prediction</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+        }
+
+        .container {
+            width: 55%;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            margin-top: 40px;
+            border-radius: 15px;
+            box-shadow: 0px 8px 20px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+
+        select {
+            width: 80%;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #4facfe;
+            color: white;
+            padding: 6px 12px;
+            margin: 5px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .tag:hover {
+            background: red;
+        }
+
+        button {
+            padding: 12px 25px;
+            background: #4facfe;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .result {
+            text-align: left;
+            margin-top: 25px;
+        }
+
+        .card {
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 10px;
+            background: #f9f9f9;
+        }
+
+        .top {
+            border-left: 5px solid #28a745;
+            background: #eafaf1;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🧠 Disease Prediction</h1>
+
+    <!-- 🔥 SAFETY WARNING -->
+    <div class="warning">
+    ⚠️ This tool provides general health insights based on symptoms and is not a substitute for professional medical advice. Please consult a qualified healthcare provider for an accurate diagnosis.
+    </div>
+
+    <select id="symptomDropdown" onchange="addSymptom()">
+        <option value="">-- Select Symptom --</option>
+    </select>
+
+    <div id="selectedBox"></div>
+
+    <!-- 🔥 ERROR / WARNING MESSAGE -->
+    <div class="error" id="errorMsg"></div>
+
+    <button onclick="predict()">Predict</button>
+
+    <div class="result" id="result"></div>
+
+</div>
+
+<script>
+
+let selectedSymptoms = [];
+
+// Load symptoms
+async function loadSymptoms() {
+    let res = await fetch("http://127.0.0.1:8000/symptoms");
+    let data = await res.json();
+
+    let dropdown = document.getElementById("symptomDropdown");
+
+    data.forEach(symptom => {
+        let option = document.createElement("option");
+        option.value = symptom;
+        option.text = symptom.replaceAll("_", " ");
+        dropdown.appendChild(option);
+    });
+}
+
+// Add symptom
+function addSymptom() {
+    let dropdown = document.getElementById("symptomDropdown");
+    let value = dropdown.value;
+
+    if (value && !selectedSymptoms.includes(value)) {
+        selectedSymptoms.push(value);
+        renderSelected();
+    }
+
+    dropdown.value = "";
+}
+
+// Render selected
+function renderSelected() {
+    let box = document.getElementById("selectedBox");
+    box.innerHTML = "";
+
+    selectedSymptoms.forEach(symptom => {
+        let tag = document.createElement("span");
+        tag.className = "tag";
+        tag.innerText = symptom.replaceAll("_", " ");
+        tag.onclick = () => removeSymptom(symptom);
+
+        box.appendChild(tag);
+    });
+}
+
+// Remove
+function removeSymptom(symptom) {
+    selectedSymptoms = selectedSymptoms.filter(s => s !== symptom);
+    renderSelected();
+}
+
+// Predict
+async function predict() {
+
+    let errorDiv = document.getElementById("errorMsg");
+    errorDiv.innerText = "";
+
+    // 🔥 CHECK 1: minimum symptoms
+    if (selectedSymptoms.length < 2) {
+        errorDiv.innerText = "⚠️ Please select at least 2 symptoms.";
+        return;
+    }
+
+    let response = await fetch("http://127.0.0.1:8000/predict", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ selected_symptoms: selectedSymptoms })
+    });
+
+    let data = await response.json();
+
+    let resultDiv = document.getElementById("result");
+    resultDiv.innerHTML = "<h2>Prediction Results:</h2>";
+
+    // 🔥 CHECK 2: low confidence warning
+    if (data.results[0].probability < 30) {
+        resultDiv.innerHTML += "<p style='color:red;'>⚠️ Low confidence prediction. Try adding more symptoms.</p>";
+    }
+
+    // 🔥 CHECK 3: conflicting predictions
+    if (data.results[0].probability - data.results[1].probability < 10) {
+        resultDiv.innerHTML += "<p style='color:orange;'>⚠️ Model is uncertain. Multiple diseases have similar probability.</p>";
+    }
+
+    data.results.forEach((item, index) => {
+        resultDiv.innerHTML += `
+            <div class="card ${index === 0 ? 'top' : ''}">
+                <h3>${item.disease}</h3>
+                <p><b>Confidence:</b> ${item.probability}%</p>
+                <p>${item.description}</p>
+            </div>
+        `;
+    });
+}
+
+// Load
+loadSymptoms();
+
+</script>
+
+</body>
+</html>

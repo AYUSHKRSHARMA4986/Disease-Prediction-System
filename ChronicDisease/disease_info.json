@@ -1,0 +1,166 @@
+{
+  "Fungal infection": {
+    "description": "A fungal infection affecting skin, hair, or nails.",
+    "precautions": ["Keep skin dry", "Use antifungal creams", "Maintain hygiene"]
+  },
+  "Allergy": {
+    "description": "Immune response to allergens.",
+    "precautions": ["Avoid allergens", "Take antihistamines"]
+  },
+  "GERD": {
+    "description": "Acid reflux disease affecting the esophagus.",
+    "precautions": ["Avoid spicy food", "Eat smaller meals"]
+  },
+  "Chronic cholestasis": {
+    "description": "Reduced bile flow from the liver.",
+    "precautions": ["Avoid fatty food", "Consult doctor"]
+  },
+  "Drug Reaction": {
+    "description": "Adverse reaction to medication.",
+    "precautions": ["Stop medication", "Seek medical help"]
+  },
+  "Peptic ulcer diseae": {
+    "description": "Sores in the stomach lining.",
+    "precautions": ["Avoid spicy food", "Limit alcohol"]
+  },
+  "AIDS": {
+    "description": "Chronic immune system disease caused by HIV.",
+    "precautions": ["Safe practices", "Regular treatment"]
+  },
+  "Diabetes ": {
+    "description": "High blood sugar levels condition.",
+    "precautions": ["Monitor sugar", "Exercise regularly"]
+  },
+  "Gastroenteritis": {
+    "description": "Inflammation of stomach and intestines.",
+    "precautions": ["Stay hydrated", "Avoid contaminated food"]
+  },
+  "Bronchial Asthma": {
+    "description": "Airway inflammation causing breathing difficulty.",
+    "precautions": ["Avoid triggers", "Use inhaler"]
+  },
+  "Hypertension ": {
+    "description": "High blood pressure condition.",
+    "precautions": ["Reduce salt", "Exercise"]
+  },
+  "Migraine": {
+    "description": "Severe recurring headache.",
+    "precautions": ["Avoid stress", "Proper sleep"]
+  },
+  "Cervical spondylosis": {
+    "description": "Degeneration of neck spine.",
+    "precautions": ["Maintain posture", "Exercise"]
+  },
+  "Paralysis (brain hemorrhage)": {
+    "description": "Loss of muscle function due to brain bleeding.",
+    "precautions": ["Emergency care", "Rehabilitation"]
+  },
+  "Jaundice": {
+    "description": "Yellowing due to liver issues.",
+    "precautions": ["Avoid alcohol", "Stay hydrated"]
+  },
+  "Malaria": {
+    "description": "Mosquito-borne disease.",
+    "precautions": ["Use mosquito nets", "Avoid stagnant water"]
+  },
+  "Chicken pox": {
+    "description": "Viral infection causing rash.",
+    "precautions": ["Isolation", "Vaccination"]
+  },
+  "Dengue": {
+    "description": "Mosquito-borne viral infection.",
+    "precautions": ["Avoid mosquitoes", "Stay hydrated"]
+  },
+  "Typhoid": {
+    "description": "Bacterial infection from contaminated food.",
+    "precautions": ["Clean water", "Hygiene"]
+  },
+  "hepatitis A": {
+    "description": "Liver infection caused by virus.",
+    "precautions": ["Vaccination", "Clean food"]
+  },
+  "Hepatitis B": {
+    "description": "Serious liver infection.",
+    "precautions": ["Vaccination", "Avoid sharing needles"]
+  },
+  "Hepatitis C": {
+    "description": "Viral liver infection.",
+    "precautions": ["Avoid contaminated blood"]
+  },
+  "Hepatitis D": {
+    "description": "Occurs with Hepatitis B infection.",
+    "precautions": ["Vaccination", "Medical care"]
+  },
+  "Hepatitis E": {
+    "description": "Waterborne liver infection.",
+    "precautions": ["Drink clean water"]
+  },
+  "Alcoholic hepatitis": {
+    "description": "Liver inflammation due to alcohol.",
+    "precautions": ["Avoid alcohol", "Healthy diet"]
+  },
+  "Tuberculosis": {
+    "description": "Bacterial lung infection.",
+    "precautions": ["Complete treatment", "Wear mask"]
+  },
+  "Common Cold": {
+    "description": "Viral infection of nose and throat.",
+    "precautions": ["Rest", "Hydration"]
+  },
+  "Pneumonia": {
+    "description": "Lung infection causing inflammation.",
+    "precautions": ["Vaccination", "Medical care"]
+  },
+  "Dimorphic hemmorhoids(piles)": {
+    "description": "Swollen veins in rectum.",
+    "precautions": ["High fiber diet", "Drink water"]
+  },
+  "Heart attack": {
+    "description": "Blocked blood flow to heart.",
+    "precautions": ["Emergency care", "Healthy lifestyle"]
+  },
+  "Varicose veins": {
+    "description": "Enlarged twisted veins.",
+    "precautions": ["Exercise", "Avoid long standing"]
+  },
+  "Hypothyroidism": {
+    "description": "Underactive thyroid.",
+    "precautions": ["Medication", "Regular checkups"]
+  },
+  "Hyperthyroidism": {
+    "description": "Overactive thyroid.",
+    "precautions": ["Medical treatment"]
+  },
+  "Hypoglycemia": {
+    "description": "Low blood sugar.",
+    "precautions": ["Regular meals", "Monitor glucose"]
+  },
+  "Osteoarthristis": {
+    "description": "Joint wear-and-tear disease.",
+    "precautions": ["Exercise", "Weight control"]
+  },
+  "Arthritis": {
+    "description": "Joint inflammation.",
+    "precautions": ["Exercise", "Medication"]
+  },
+  "(vertigo) Paroymsal  Positional Vertigo": {
+    "description": "Dizziness due to inner ear issues.",
+    "precautions": ["Avoid sudden movements"]
+  },
+  "Acne": {
+    "description": "Skin condition causing pimples.",
+    "precautions": ["Keep skin clean", "Avoid oily products"]
+  },
+  "Urinary tract infection": {
+    "description": "Infection in urinary system.",
+    "precautions": ["Drink water", "Maintain hygiene"]
+  },
+  "Psoriasis": {
+    "description": "Chronic skin disease.",
+    "precautions": ["Moisturize skin", "Avoid triggers"]
+  },
+  "Impetigo": {
+    "description": "Bacterial skin infection.",
+    "precautions": ["Maintain hygiene", "Use antibiotics"]
+  }
+}
