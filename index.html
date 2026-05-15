@@ -88,9 +88,8 @@
 
     <h1>🧠 Disease Prediction</h1>
 
-    <!-- 🔥 SAFETY WARNING -->
     <div class="warning">
-    ⚠️ This tool provides general health insights based on symptoms and is not a substitute for professional medical advice. Please consult a qualified healthcare provider for an accurate diagnosis.
+        ⚠️ This tool provides general health insights and is not a substitute for professional medical advice.
     </div>
 
     <select id="symptomDropdown" onchange="addSymptom()">
@@ -99,7 +98,6 @@
 
     <div id="selectedBox"></div>
 
-    <!-- 🔥 ERROR / WARNING MESSAGE -->
     <div class="error" id="errorMsg"></div>
 
     <button onclick="predict()">Predict</button>
@@ -112,7 +110,7 @@
 
 let selectedSymptoms = [];
 
-// Load symptoms
+// ✅ LOAD SYMPTOMS FROM DEPLOYED API
 async function loadSymptoms() {
     let res = await fetch("https://disease-prediction-system-api-v582.onrender.com/symptoms");
     let data = await res.json();
@@ -127,7 +125,7 @@ async function loadSymptoms() {
     });
 }
 
-// Add symptom
+// ✅ ADD SYMPTOM
 function addSymptom() {
     let dropdown = document.getElementById("symptomDropdown");
     let value = dropdown.value;
@@ -140,7 +138,7 @@ function addSymptom() {
     dropdown.value = "";
 }
 
-// Render selected
+// ✅ SHOW SELECTED
 function renderSelected() {
     let box = document.getElementById("selectedBox");
     box.innerHTML = "";
@@ -155,57 +153,55 @@ function renderSelected() {
     });
 }
 
-// Remove
+// ✅ REMOVE
 function removeSymptom(symptom) {
     selectedSymptoms = selectedSymptoms.filter(s => s !== symptom);
     renderSelected();
 }
 
-// Predict
+// ✅ PREDICT (FIXED)
 async function predict() {
 
     let errorDiv = document.getElementById("errorMsg");
     errorDiv.innerText = "";
 
-    // 🔥 CHECK 1: minimum symptoms
     if (selectedSymptoms.length < 2) {
         errorDiv.innerText = "⚠️ Please select at least 2 symptoms.";
         return;
     }
 
-    let response = await fetch("http://127.0.0.1:8000/predict", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ selected_symptoms: selectedSymptoms })
-    });
+    try {
+        let response = await fetch("https://disease-prediction-system-api-v582.onrender.com/predict", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ selected_symptoms: selectedSymptoms })
+        });
 
-    let data = await response.json();
+        if (!response.ok) {
+            throw new Error("API Error");
+        }
 
-    let resultDiv = document.getElementById("result");
-    resultDiv.innerHTML = "<h2>Prediction Results:</h2>";
+        let data = await response.json();
+        console.log("API Response:", data);
 
-    // 🔥 CHECK 2: low confidence warning
-    if (data.results[0].probability < 30) {
-        resultDiv.innerHTML += "<p style='color:red;'>⚠️ Low confidence prediction. Try adding more symptoms.</p>";
-    }
+        let resultDiv = document.getElementById("result");
 
-    // 🔥 CHECK 3: conflicting predictions
-    if (data.results[0].probability - data.results[1].probability < 10) {
-        resultDiv.innerHTML += "<p style='color:orange;'>⚠️ Model is uncertain. Multiple diseases have similar probability.</p>";
-    }
-
-    data.results.forEach((item, index) => {
-        resultDiv.innerHTML += `
-            <div class="card ${index === 0 ? 'top' : ''}">
-                <h3>${item.disease}</h3>
-                <p><b>Confidence:</b> ${item.probability}%</p>
-                <p>${item.description}</p>
+        // ✅ SIMPLE RESULT DISPLAY (MATCHES BACKEND)
+        resultDiv.innerHTML = `
+            <h2>Prediction Result:</h2>
+            <div class="card top">
+                <h3>${data.prediction}</h3>
+                <p><b>Status:</b> ${data.status}</p>
             </div>
         `;
-    });
+
+    } catch (error) {
+        console.error(error);
+        document.getElementById("errorMsg").innerText = "⚠️ Failed to get prediction.";
+    }
 }
 
-// Load
+// INIT
 loadSymptoms();
 
 </script>
